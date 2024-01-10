@@ -29,19 +29,19 @@ export interface isStudentClass {
 }
 
 export class StudentClass implements isStudentClass {
-  private _firstName! = string;
-  private _lastName! = string;
+  private _firstName!: string;
+  private _lastName!: string;
 
   constructor(firstName: string, lastName: string) {
     this._firstName = firstName;
     this._lastName = lastName;
   }
 
-  workHomework() {
+  workOnHomework() {
     return 'Currently working';
   }
 
   displayName() {
-    this._firstName;
+    return this._firstName;
   }
 }
