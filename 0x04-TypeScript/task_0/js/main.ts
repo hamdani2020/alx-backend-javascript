@@ -25,9 +25,9 @@ const studentsList: Array<Student> = [
 ];
 
 const styleSheet = `
-  html {
+  * {
     margin: 0;
-    height: 100%;
+    padding: 0;
   }
   body {
     box-sizing: border-box;
@@ -35,13 +35,15 @@ const styleSheet = `
     align-items: center;
     justify-content: center;
     height: 80%;
-    margin: 10%;
+    margin: 20%;
+    background-color: #9b8ea3;
   }
   table {
     border-collapse: collapse;
   }
   thead {
     font-weight: bold;
+    font-color: #ccc;
   }
   td {
     padding: 10px;
@@ -65,10 +67,10 @@ export const studentsInfo = (students: Array<Student>): void => {
   const table = document.createElement('table');
   const tableHead = document.createElement('thead');
   const headRow = document.createElement('tr');
-  const tableBody = documemt.createElement('tbody');
-  headRow.insertAdjacentHTML('beforeend', '<td>FirstName</td>');
-  headRow.insertAdjacentHTML('beforeend', '<td>Location</td>');
-  tableHead.insertAdjacentHTML('beforeend', bodyRow);
+  const tableBody = document.createElement('tbody');
+  headRow.insertAdjacentHTML('beforeend', '<td>FirstName</td');
+  headRow.insertAdjacentHTML('beforeend', '<td>Location</td');
+  tableHead.insertAdjacentElement('beforeend', headRow);
 
   for (const student of students) {
     const bodyRow = document.createElement('tr');
@@ -82,8 +84,8 @@ export const studentsInfo = (students: Array<Student>): void => {
   document.body.insertAdjacentElement('beforeend', table);
 };
 
-studentInfo(studentsList);
-const styleSheetElement = document.createELement('style');
-styleSheetELement.innerHTML = styleSheet;
+studentsInfo(studentsList);
+const styleSheetElement = document.createElement('style');
+styleSheetElement.innerHTML = styleSheet;
 document.head.insertAdjacentElement('beforeend', styleSheetElement);
 document.title = 'Task 0';
