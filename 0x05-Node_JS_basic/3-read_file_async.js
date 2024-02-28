@@ -4,7 +4,6 @@ const fs = require('fs');
  * It counts the number of students in the database
  */
 
-
 const countStudents = (dataPath) => new Promise((resolve, reject) => {
   fs.readFile(dataPath, 'utf-8', (err, data) => {
     if (err) {
