@@ -62,7 +62,6 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
   }
 });
 
-
 const SERVER_ROUTE_HANDLERS = [
   {
     route: '/',
