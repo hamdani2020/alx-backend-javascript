@@ -1,15 +1,14 @@
 const fs = require('fs');
 const http = require('http');
 
-/**
- * It counts the number of students in the CSV file
- */
-
 const PORT = 1245;
 const HOST = 'localhost';
 const app = http.createServer();
 const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
 
+/**
+ * Counts the students in a CSV data file.
+ */
 const countStudents = (dataPath) => new Promise((resolve, reject) => {
   if (!dataPath) {
     reject(new Error('Cannot load the database'));
@@ -17,47 +16,52 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
   if (dataPath) {
     fs.readFile(dataPath, (err, data) => {
       if (err) {
-	reject(new Error('Cannot load the database'));
+        reject(new Error('Cannot load the database'));
       }
       if (data) {
-	const reportParts = [];
-	const FileLines = data.toString('utf-8').trim().split('\n');
-	const StudentGroups = {};
-	const DbFieldNames = FileLines[0].split(',');
-	const StudentPropNames = DbFieldNames.slice(
-	  0, DbFieldNames.length - 1,
+        const reportParts = [];
+        const FileLines = data.toString('utf-8').trim().split('\n');
+        const StudentsGroups = {};
+        const FieldNames = FileLines[0].split(',');
+        const studentPropNames = FieldNames.slice(
+          0,
+          FieldNames.length - 1,
         );
-	for (const line of FileLines.slice(1)) {
-	  const StudentRecord = line.split(',');
-	  const StudentPropValues = StudentRecord.slice(
-	    0, StudentRecord.length - 1,
+
+        for (const line of FileLines.slice(1)) {
+          const studentRecord = line.split(',');
+          const studentPropValues = studentRecord.slice(
+            0,
+            studentRecord.length - 1,
           );
-	  const field = StudentRecord[StudentRecord.length - 1];
-	  if (!Object.keys(StudentGroups).includes(field)) {
-	    StudentGroups[field] = [];
-	  }
-	  const StudentEntry = StudentPropNames.map((propName, idx) => [
-	    propName, StudentPropValues[idx],
-	  ]);
-	  StudentGroups[field].push(Object.fromEntries(StudentEntry));
+          const field = studentRecord[studentRecord.length - 1];
+          if (!Object.keys(StudentsGroups).includes(field)) {
+            StudentsGroups[field] = [];
+          }
+          const studentEntries = studentPropNames.map((propName, idx) => [
+            propName,
+            studentPropValues[idx],
+          ]);
+          StudentsGroups[field].push(Object.fromEntries(studentEntries));
         }
 
-	const TotalStudents = Object.values(StudentGroups).reduce(
-	  (pre, cur) => (pre || []).length + cur.length,
-	);
-	reportParts.push(`Number of students: ${TotalStudents}`);
-	for (const [field, group] of Object.entries(StudentGroups)) {
-	  reportParts.push([
-	    `Number of students in ${field}: ${group.length}.`,
-	    'List:',
-	    group.map((student) => student.firstname).join(', '),
-	  ].join(' '));
-	}
-	resolve(reportParts.join('\n'));
+        const totalStudents = Object.values(StudentsGroups).reduce(
+          (pre, cur) => (pre || []).length + cur.length,
+        );
+        reportParts.push(`Number of students: ${totalStudents}`);
+        for (const [field, group] of Object.entries(StudentsGroups)) {
+          reportParts.push([
+            `Number of students in ${field}: ${group.length}.`,
+            'List:',
+            group.map((student) => student.firstname).join(', '),
+          ].join(' '));
+        }
+        resolve(reportParts.join('\n'));
       }
     });
   }
 });
+
 
 const SERVER_ROUTE_HANDLERS = [
   {
